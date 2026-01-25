@@ -1,7 +1,11 @@
-import jwt from "jsonwebtoken";
+import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
-const EXPIRES_IN = process.env.JWT_EXPIRES_IN || "7d";
+const JWT_SECRET: Secret = process.env.JWT_SECRET || "";
+if (!JWT_SECRET) {
+  throw new Error("Missing JWT_SECRET in environment variables");
+}
+
+const EXPIRES_IN = (process.env.JWT_EXPIRES_IN || "7d") as SignOptions["expiresIn"];
 
 export type JwtUser = { sub: string; email: string; name: string };
 
